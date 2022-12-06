@@ -9,40 +9,52 @@ interface point {
 }
 
 function App() {
-  const [dotList, setDotList] = useState<point[]>([{x:0, y:0}]);
-  const [undoSteps, setUndoSteps] = useState(0 as number);
+  const [dotList, setDotList] = useState<point[]>([]);
+  const [undoDots, setUndoDots] = useState<point[]>([]);
 
   const clickAction = (e:MouseEvent) => {
     e.preventDefault();
     const newPoint: point = {x:e.clientX, y:e.clientY};
     setDotList([...dotList, newPoint]);
+    setUndoDots([]);
   }
   
+  const undo = () => {
+    if (dotList.length == 0) return;
+    const lastPoint = dotList.pop();
+    if (lastPoint !== undefined) {
+        setDotList(dotList);
+        setUndoDots([...undoDots, lastPoint]);
+    }
+  }
+
+  const redo = () => {
+    if (undoDots.length == 0) return;
+    const lastUndo = undoDots.pop();
+    if (lastUndo !== undefined) {
+      setUndoDots(undoDots);
+      setDotList([...dotList, lastUndo]);
+    }
+  }
+
   const renderDots = (list:point[]) => {
     return list.map((p,i,arr) => {
-      if (arr.length - i < undoSteps) return true;
       const style: CSSProperties = {
         position: 'absolute',
         left: p.x - 16,
         top: p.y - 16,
       }
-      return <div className='dot' style={style}></div>
+      return <div className='dot' style={style} key={i}></div>
     });
   }
 
   return (<div>
-      <button onClick={()=>{
-        setUndoSteps(Math.min(undoSteps + 1, dotList.length));
-        }}>undo</button>
-      <button onClick={()=>{
-        setUndoSteps(Math.max(undoSteps - 1, 0));
-        }}>redo</button>
+      <button onClick={undo}>undo</button>
+      <button onClick={redo}>redo</button>
     <div className="App" onClick={clickAction}>
       {renderDots(dotList)}
     </div>
-  </div>
-    
-  );
+  </div>);
 }
 
 export default App;
