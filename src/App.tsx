@@ -9,18 +9,29 @@ interface point {
 }
 
 function App() {
+  const [newDot, setNewDot] = useState<point|undefined>();
   const [dotList, setDotList] = useState<point[]>([]);
   const [undoDots, setUndoDots] = useState<point[]>([]);
 
-  const clickAction = (e:MouseEvent) => {
+  const mouseDownAction = (e:MouseEvent) => {
+    e.preventDefault()
+    setNewDot({x:e.pageX, y:e.pageY});
+  }
+
+  const mouseUpAction = (e:MouseEvent) => {
     e.preventDefault();
-    const newPoint: point = {x:e.pageX, y:e.pageY};
-    setDotList([...dotList, newPoint]);
-    setUndoDots([]);
+    if (newDot !== undefined){
+      setDotList([...dotList, newDot]);
+      setNewDot(undefined);
+      setUndoDots([]);
+    }
   }
   
-  const undo = (e:MouseEvent) => {
+  const stopProp = (e:MouseEvent) => {
     e.stopPropagation();
+  }
+
+  const undo = (e:MouseEvent) => {
     if (dotList.length == 0) return;
     const lastPoint = dotList.pop();
     if (lastPoint !== undefined) {
@@ -30,7 +41,6 @@ function App() {
   }
 
   const redo = (e:MouseEvent) => {
-    e.stopPropagation();
     if (undoDots.length == 0) return;
     const lastUndo = undoDots.pop();
     if (lastUndo !== undefined) {
@@ -51,10 +61,10 @@ function App() {
   }
 
   return (<div>
-    <div className="App" onClick={clickAction}>
+    <div className="App" onMouseDown={mouseDownAction} onMouseUp={mouseUpAction}>
       <div className='button-well'>
-        <button onClick={undo}>undo</button>
-        <button onClick={redo}>redo</button>
+        <button onMouseDown={stopProp} onMouseUp={mouseUpAction} onClick={undo}>undo</button>
+        <button onMouseDown={stopProp} onMouseUp={mouseUpAction} onClick={redo}>redo</button>
       </div>
       {renderDots(dotList)}
     </div>
