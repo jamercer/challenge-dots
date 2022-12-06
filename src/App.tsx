@@ -1,5 +1,4 @@
-import React, { CSSProperties, MouseEvent, useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React, { CSSProperties, MouseEvent, useState } from 'react';
 import './App.css';
 
 
@@ -38,7 +37,7 @@ function App() {
   }
 
   const undo = (e:MouseEvent) => {
-    if (dotList.length == 0) return;
+    if (dotList.length === 0) return;
     const lastPoint = dotList.pop();
     if (lastPoint !== undefined) {
         setDotList(dotList);
@@ -47,7 +46,7 @@ function App() {
   }
 
   const redo = (e:MouseEvent) => {
-    if (undoDots.length == 0) return;
+    if (undoDots.length === 0) return;
     const lastUndo = undoDots.pop();
     if (lastUndo !== undefined) {
       setUndoDots(undoDots);
