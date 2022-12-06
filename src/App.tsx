@@ -14,12 +14,13 @@ function App() {
 
   const clickAction = (e:MouseEvent) => {
     e.preventDefault();
-    const newPoint: point = {x:e.clientX, y:e.clientY};
+    const newPoint: point = {x:e.pageX, y:e.pageY};
     setDotList([...dotList, newPoint]);
     setUndoDots([]);
   }
   
-  const undo = () => {
+  const undo = (e:MouseEvent) => {
+    e.stopPropagation();
     if (dotList.length == 0) return;
     const lastPoint = dotList.pop();
     if (lastPoint !== undefined) {
@@ -28,7 +29,8 @@ function App() {
     }
   }
 
-  const redo = () => {
+  const redo = (e:MouseEvent) => {
+    e.stopPropagation();
     if (undoDots.length == 0) return;
     const lastUndo = undoDots.pop();
     if (lastUndo !== undefined) {
@@ -51,8 +53,8 @@ function App() {
   return (<div>
     <div className="App" onClick={clickAction}>
       <div className='button-well'>
-      <button onClick={undo}>undo</button>
-      <button onClick={redo}>redo</button>
+        <button onClick={undo}>undo</button>
+        <button onClick={redo}>redo</button>
       </div>
       {renderDots(dotList)}
     </div>
