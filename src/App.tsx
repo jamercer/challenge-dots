@@ -1,11 +1,6 @@
 import React, { CSSProperties, MouseEvent, useState } from 'react';
 import './App.css';
-
-
-interface point {
-  x: number,
-  y: number,
-}
+import dot, { point } from './dot';
 
 function App() {
   const [pointerPos, setPointerPos] = useState<point>({x:0, y:0});
@@ -61,7 +56,7 @@ function App() {
         left: p.x - 16,
         top: p.y - 16,
       }
-      return <div className='dot' style={style} key={i}></div>
+      return dot(style,i);
     });
   }
 
@@ -80,7 +75,7 @@ function App() {
       top: dotStart.y - 16,
       transform: transformStyle,
     }
-    return <div className='newDot' style={style}></div>
+    return dot(style,'lol', true);
   }
 
   return (<div>
