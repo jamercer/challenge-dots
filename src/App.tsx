@@ -49,9 +49,11 @@ function App() {
   }
 
   return (<div>
+    <div className="App" onClick={clickAction}>
+      <div className='button-well'>
       <button onClick={undo}>undo</button>
       <button onClick={redo}>redo</button>
-    <div className="App" onClick={clickAction}>
+      </div>
       {renderDots(dotList)}
     </div>
   </div>);

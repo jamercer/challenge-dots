@@ -1,3 +1,7 @@
+html {
+	overflow: hidden;
+}
+
 .App {
   text-align: center;
   min-height: 100vh;
@@ -12,9 +16,25 @@
   background-color:darkmagenta;
 }
 
+.button-well {
+	position: absolute;
+	bottom: 10vh;
+	right: 0;
+	left: 0;
+}
+
 button {
-  z-index: 1;
-  position: relative;
+	margin: 0 0.5rem;
+	width: 10rem;
+	max-width: 30%;
+	height: 4rem;
+	z-index: 1;
+	position: relative;
+	font-size: large;
+	font-weight: bold;
+	border: 4px black solid;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
 .App-logo {
